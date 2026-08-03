@@ -27,14 +27,14 @@ import socket
 import signal
 import argparse
 
-def tcpClient(host):
+def tcpClient(host, port):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
-    client.connect((host,80))
+    client.connect((host,port))
     data = (f"GET / HTTP 1.1 \r\n HOST: {host} \r\n\r\n").encode()
     client.send(data)
     
-    print(client.recv(4096))
+    print(client.recv(4096).decode())
     client.close()
 
     return
@@ -52,20 +52,21 @@ signal.signal(signal.SIGINT, hndlCtrlC)
 
 def main():
     parser = argparse.ArgumentParser(
-        description = "TCP clinet",
-        usage="tcpClient [host]"
+        description = "TCP client",
+        usage="tcpClient [host] [port]"
     )
 
     parser.add_argument('host', help="Host to connect to")
+    parser.add_argument('port', help='Port to connect on')
 
 
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(0)
 
-    arg = parser.parse_args()
+    args = parser.parse_args()
 
-    tcpClient(arg.host)
+    tcpClient(args.host, int(args.port))
 
 
 if __name__ == "__main__":
