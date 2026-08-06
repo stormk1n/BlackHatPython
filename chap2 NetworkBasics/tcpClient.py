@@ -28,21 +28,26 @@ import signal
 import argparse
 
 def tcpClient(host, port):
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        tcpClient = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
+        tcpClient.connect((host,port))
+        data = (f"GET / HTTP 1.1 \r\n HOST: {host} \r\n\r\n").encode()
+        tcpClient.send(data)
     
-    client.connect((host,port))
-    data = (f"GET / HTTP 1.1 \r\n HOST: {host} \r\n\r\n").encode()
-    client.send(data)
-    
-    print(client.recv(4096).decode())
-    client.close()
+        print("[+]\n",tcpClient.recv(4096).decode(), sep="")
+        tcpClient.close()
 
-    return
+        return True
+
+    except Exception as err:
+        print(f"\n[-] {err}")
+        return False
 
 
 
 def hndlCtrlC(signum, ctrlC):
-    print("\nCTRL+C detected, closing cleanly")
+    print("\n[-] CTRL+C detected, closing cleanly")
     sys.exit(0)
 
 signal.signal(signal.SIGINT, hndlCtrlC)
@@ -50,13 +55,13 @@ signal.signal(signal.SIGINT, hndlCtrlC)
 
 
 
-def main():
+def tcpMain():
     parser = argparse.ArgumentParser(
         description = "TCP client",
         usage="tcpClient [host] [port]"
     )
 
-    parser.add_argument('host', help="Host to connect to")
+    parser.add_argument('host', help="TCP Host to connect to")
     parser.add_argument('port', help='Port to connect on')
 
 
@@ -70,5 +75,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    tcpMain()
 
