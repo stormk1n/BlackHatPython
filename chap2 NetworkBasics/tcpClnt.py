@@ -32,7 +32,7 @@ def tcpClient(host, port):
         tcpClient = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
         tcpClient.connect((host,port))
-        data = (f"GET / HTTP 1.1 \r\n HOST: {host} \r\n\r\n").encode()
+        data = (f"GET / HTTP 1.1 \r\nHOST: {host} \r\n\r\n").encode()
         tcpClient.send(data)
     
         print("[+]\n",tcpClient.recv(4096).decode(), sep="")
@@ -61,8 +61,8 @@ def tcpMain():
         usage="tcpClient [Rhost] [Rport]"
     )
 
-    parser.add_argument('host', help="TCP Host to connect to")
-    parser.add_argument('port', help='Port to connect on')
+    parser.add_argument('Rhost', help="TCP Host to connect to")
+    parser.add_argument('Rport', help='Port to connect on')
 
 
     if len(sys.argv) == 1 or len(sys.argv) == 2:
@@ -71,7 +71,7 @@ def tcpMain():
 
     args = parser.parse_args()
 
-    tcpClient(args.host, int(args.port))
+    tcpClient(args.Rhost, int(args.Rport))
 
 
 if __name__ == "__main__":
