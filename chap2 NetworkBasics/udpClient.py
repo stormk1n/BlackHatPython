@@ -54,13 +54,13 @@ def udpClient(host, port):
 def udpMain():
     parser = argparse.ArgumentParser(
         description="UDP client",
-        usage="udpClient [host] [port]"
+        usage="udpClient [Rhost] [Rport]"
     )
 
     parser.add_argument('host', help="UDP Host to connect to")
     parser.add_argument('port', help="Port to connect on")
 
-    if len(sys.argv) == 1:
+    if len(sys.argv) == 1 or len(sys.argv) == 2:
         parser.print_help()
         sys.exit(0)
     
