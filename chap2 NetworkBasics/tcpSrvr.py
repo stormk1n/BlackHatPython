@@ -10,11 +10,11 @@ port=9998
 
 # Recvs and sends simple message back to clnt
 def hndlClnt(clntSckt):
-    with clntSckt as sock:
-        request = sock.recv(1024)
+    with clntSckt as Tcpsock:
+        request = Tcpsock.recv(1024)
         
-        print(f"[*] Recieved: {request.decode('utf-8')}")
-        sock.send(b'ACK')
+        print(f"[*] Recieved:\n{request.decode('utf-8')}")
+        Tcpsock.send(b'ACK')
 
 
 def mainSrvr(Lhost, Lport):
@@ -27,21 +27,20 @@ def mainSrvr(Lhost, Lport):
         # setting a max back log request of 5
         tcpSrvr.listen(5)
         
-        print(f"[+] Listening on {Lhost}:{Lport}")
+        print(f"[+] TCP srvr Listening on {Lhost}:{Lport}")
         
         # Placing the server in listening loop
         
         while True:
             # client socket goes to tcpClnt varaible
             # remote connection details goes to addrs varaible
-            tcpClnt, addrs = tcpSrvr.accept()
+            tcpClntMsg, addrs = tcpSrvr.accept()
             
-            print(f"Accepted connection from {addrs[0]}:{addrs[1]}")
+            print(f"Accepted connection from {addrs[0]}:{addrs[1]}\n")
             
             # creating new thread that points to hndlClnt
             # while passing clnt socket as argument
-            
-            clntHndler = threading.Thread(target=hndlClnt,args=(tcpClnt,))
+            clntHndler = threading.Thread(target=hndlClnt,args=(tcpClntMsg,))
             clntHndler.start()
 
         return True

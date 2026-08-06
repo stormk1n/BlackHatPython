@@ -28,7 +28,7 @@ def udpClient(host, port):
     try:
         udpClient = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        udpClient.sendto(b"AAABBBCCC",(host,port))
+        udpClient.sendto(b"Hello!",(host,port))
 
         udpClient.settimeout(5)
 
@@ -57,8 +57,8 @@ def udpMain():
         usage="udpClient [Rhost] [Rport]"
     )
 
-    parser.add_argument('host', help="UDP Host to connect to")
-    parser.add_argument('port', help="Port to connect on")
+    parser.add_argument('Rhost', help="UDP Host to connect to")
+    parser.add_argument('Rport', help="Port to connect on")
 
     if len(sys.argv) == 1 or len(sys.argv) == 2:
         parser.print_help()
@@ -66,7 +66,7 @@ def udpMain():
     
     args = parser.parse_args()
 
-    udpClient(args.host, int(args.port))
+    udpClient(args.Rhost, int(args.Rport))
 
     return True
 
