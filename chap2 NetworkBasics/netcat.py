@@ -17,8 +17,6 @@ def extCmd(cmd):
     return output.decode()
 
 
-
-
 def main():
     custom_formatter = lambda prog: argparse.HelpFormatter(prog, max_help_position=50, width=100)
     parser = argparse.ArgumentParser(
